@@ -47,17 +47,24 @@ public class DocumentoServiceImpl implements DocumentoService{
 
 	
 	@Override
-	public Documento save(DocumentoRequestDTO documentoDto, Long id) {
-		Documento entity = mapToEntity(documentoDto, id);
+	public Documento save(DocumentoRequestDTO documentoDto, Long beneficiarioId) {
+		Documento entity = mapToEntity(documentoDto, beneficiarioId);
 	   	return documentoRepository.save(entity);
 	}
 
 	@Override
-	public void deleteById(Long id) {
-		// TODO Auto-generated method stub
-		
+	public void deleteByBeneficiarioId(Long beneficiarioId) {
+		documentoRepository.deleteAllByBeneficiarioId(beneficiarioId);
 	}
 	
+	@Override
+	public void saveAllDocumento(List<DocumentoRequestDTO> documentoList, Long beneficiarioId) {
+		if (documentoList.size() >= 1) {
+	        for (DocumentoRequestDTO documento : documentoList) {
+	            save(documento, beneficiarioId);
+	        }
+	    }
+	}
 	
     private DocumentoResponseDTO mapToResponseDTO(Documento documento) {
     	DocumentoResponseDTO responseDTO = new DocumentoResponseDTO();

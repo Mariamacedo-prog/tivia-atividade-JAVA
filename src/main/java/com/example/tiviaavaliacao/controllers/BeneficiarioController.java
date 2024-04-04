@@ -1,7 +1,9 @@
 package com.example.tiviaavaliacao.controllers;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,9 @@ import com.example.tiviaavaliacao.dtos.BeneficiarioRequestDTO;
 import com.example.tiviaavaliacao.dtos.BeneficiarioResponseDTO;
 import com.example.tiviaavaliacao.models.Beneficiario;
 import com.example.tiviaavaliacao.services.BeneficiarioService;
+import com.example.tiviaavaliacao.services.DocumentoService;
 import com.example.tiviaavaliacao.dtos.BeneficiarioUpdateRequestDTO;
+import com.example.tiviaavaliacao.dtos.DocumentoRequestDTO;
 
 
 
@@ -31,6 +35,8 @@ import com.example.tiviaavaliacao.dtos.BeneficiarioUpdateRequestDTO;
 @RequiredArgsConstructor
 public class BeneficiarioController {
 	private final BeneficiarioService service;
+	private final DocumentoService documentoService;
+	
 	private static final Logger logger = Logger.getLogger(BeneficiarioController.class.getName());
 	 
 	@Operation( summary = "Listar todos os Beneficiarios", description = "Serviço que lista todos os beneficiarios da base de dados")
@@ -50,19 +56,21 @@ public class BeneficiarioController {
 	    }
     }
 	
-	@Operation(summary = "Cria Beneficiario", description = "Criação de beneficiario e de seus documentos  (OBS: o campo TipoDocumento só aceita os dados do ENUM TipoDocumento)")
+	@Operation(summary = "Cria Beneficiario", description = "Criação de beneficiario e de seus documentos")
     @PostMapping
     public ResponseEntity<Object> createBeneficiario(@RequestBody BeneficiarioRequestDTO beneficiario) {
 	    Beneficiario model = service.save(beneficiario);
 	    if (model != null) {
 	    	Optional<BeneficiarioResponseDTO> optional = service.findById(model.getId());
+	      	documentoService.saveAllDocumento(beneficiario.getDocumentos(), model.getId());
+	      	
 	        return ResponseEntity.status(HttpStatus.CREATED).body(optional);
 	    } else {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível salvar o beneficiário");
 	    }
 	}
 	
-    @Operation(summary = "Atualiza Beneficiario", description = "Permite atualizar o beneficiario pelo ID e adicionar NOVOS documentos    (OBS: o campo TipoDocumento só aceita os dados do ENUM TipoDocumento)")
+    @Operation(summary = "Atualiza Beneficiario", description = "Permite atualizar o beneficiario pelo ID e adicionar NOVOS documentos")
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateBeneficiario(@PathVariable Long id, @RequestBody BeneficiarioUpdateRequestDTO beneficiario) {
     	Beneficiario model = service.update(beneficiario, id);
@@ -81,6 +89,7 @@ public class BeneficiarioController {
 	    if (beneficiario.isEmpty())
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Beneficiario não encontrado!");
 	
+	    documentoService.deleteByBeneficiarioId(id);
 	    service.deleteById(id);
 	    return ResponseEntity.status(HttpStatus.OK).body("Beneficiario deletado com sucesso!");
     }

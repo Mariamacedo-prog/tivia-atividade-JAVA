@@ -8,9 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import com.example.tiviaavaliacao.models.Documento;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface DocumentoRepository extends JpaRepository<Documento, Long> {
 
 	 @Query("SELECT d FROM Documento d WHERE d.beneficiarioId = ?1")
 	 List<Documento> findAllByBeneficiarioId(Long beneficiarioId);
+	 
+
+	 void deleteAllByBeneficiarioId(Long beneficiarioId);
 }

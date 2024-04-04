@@ -12,7 +12,9 @@ public interface DocumentoService {
 	
 	Optional<DocumentoResponseDTO> findById(Long id);
  
-    void deleteById(Long id);
+    void deleteByBeneficiarioId(Long beneficiarioId);
 
-	Documento save(DocumentoRequestDTO documentoDto, Long id);
+	Documento save(DocumentoRequestDTO documentoDto, Long beneficiarioId);
+
+	void saveAllDocumento(List<DocumentoRequestDTO> documentoList, Long beneficiarioId);
 }

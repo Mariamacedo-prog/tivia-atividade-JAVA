@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.tiviaavaliacao.dtos.BeneficiarioResponseDTO;
 import com.example.tiviaavaliacao.dtos.DocumentoRequestDTO;
 import com.example.tiviaavaliacao.dtos.DocumentoResponseDTO;
 import com.example.tiviaavaliacao.models.Documento;
+import com.example.tiviaavaliacao.services.BeneficiarioService;
 import com.example.tiviaavaliacao.services.DocumentoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,12 +28,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/documentos")
 @RequiredArgsConstructor
 public class DocumentoController {
-	private final DocumentoService service;
 	private static final Logger logger = Logger.getLogger(DocumentoController.class.getName());
+	private final DocumentoService service;
+	private final BeneficiarioService beneficiarioService;
+
 
 	@Operation(summary = "Lista Documentos", description = "Lista todos os Documentos pelo beneficiarioId")
     @GetMapping("/{beneficiarioId}")
-    public ResponseEntity<Object> getBeneficiarioById(@PathVariable Long beneficiarioId) {
+    public ResponseEntity<Object> getDocumentoById(@PathVariable Long beneficiarioId) {
 		List<DocumentoResponseDTO> documentos = service.findAllByBeneficiarioId(beneficiarioId);
 		
 	    if (!documentos.isEmpty()) {
@@ -41,9 +45,15 @@ public class DocumentoController {
 	    }
     }
 	
-	@Operation(summary = "Criar Documento", description = "Criação de Documentos")
+	@Operation(summary = "Criar Documento", description = "Criação de Documento")
     @PostMapping("/{beneficiarioId}")
-    public ResponseEntity<Object> createBeneficiario(@PathVariable Long beneficiarioId, @RequestBody DocumentoRequestDTO documento) {
+    public ResponseEntity<Object> createDocumento(@PathVariable Long beneficiarioId, @RequestBody DocumentoRequestDTO documento) {
+    	Optional<BeneficiarioResponseDTO> beneficiarioById = beneficiarioService.findById(beneficiarioId);
+    	 if (!beneficiarioById.isPresent())
+    		  return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Beneficiário não encontrado");
+
+		
+    	 
 	    Documento model = service.save(documento, beneficiarioId);
 	    if (model != null) {
 	    	Optional<DocumentoResponseDTO> optional = service.findById(model.getId());
@@ -53,14 +63,4 @@ public class DocumentoController {
 	    }
 	}
 	
-//    @Operation(summary = "Deleta Beneficiario", description = "Deleta o Beneficiario pelo Id")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Object>  deleteBeneficiario(@PathVariable Long id) {
-//    	Optional<DocumentoResponseDTO> beneficiario = service.findById(id);
-//	    if (beneficiario.isEmpty())
-//	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Beneficiario não encontrado!");
-//	
-//	    service.deleteById(id);
-//	    return ResponseEntity.status(HttpStatus.OK).body("Beneficiario deletado com sucesso!");
-//    }
 }
