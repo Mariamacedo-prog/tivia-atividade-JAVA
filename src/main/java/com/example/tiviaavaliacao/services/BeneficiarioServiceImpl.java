@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.tiviaavaliacao.dtos.BeneficiarioRequestDTO;
 import com.example.tiviaavaliacao.dtos.BeneficiarioResponseDTO;
+import com.example.tiviaavaliacao.dtos.BeneficiarioUpdateRequestDTO;
 import com.example.tiviaavaliacao.models.Beneficiario;
 import com.example.tiviaavaliacao.repositories.BeneficiarioRepository;
 
@@ -22,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class BeneficiarioServiceImpl implements BeneficiarioService{
-	private static final Logger logger = Logger.getLogger(BeneficiarioService.class.getName());
+	private static final Logger logger = Logger.getLogger(BeneficiarioServiceImpl.class.getName());
 
     private final BeneficiarioRepository beneficiarioRepository;
 
@@ -50,7 +51,7 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
     }
 
     @Override
-    public Beneficiario update(BeneficiarioRequestDTO beneficiario, Long id) {
+    public Beneficiario update(BeneficiarioUpdateRequestDTO beneficiario, Long id) {
         Beneficiario beneficiarioFound = beneficiarioRepository.findById(id).orElse(null);
         if (beneficiarioFound != null) {
         	if(!beneficiario.getNome().isEmpty()) {
@@ -62,7 +63,7 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         	if(beneficiario.getDataNascimento() != null) {
         		beneficiarioFound.setDataNascimento(beneficiario.getDataNascimento());
         	}           	
-        	beneficiarioFound.setDataAtualizacao(LocalDateTime.now());              
+        	beneficiarioFound.setDataAtualizacao(LocalDateTime.now());
             Beneficiario newBeneficiario = beneficiarioRepository.save(beneficiarioFound);
             
             return newBeneficiario;

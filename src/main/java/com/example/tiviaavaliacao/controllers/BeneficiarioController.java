@@ -1,10 +1,8 @@
 package com.example.tiviaavaliacao.controllers;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +21,7 @@ import com.example.tiviaavaliacao.dtos.BeneficiarioRequestDTO;
 import com.example.tiviaavaliacao.dtos.BeneficiarioResponseDTO;
 import com.example.tiviaavaliacao.models.Beneficiario;
 import com.example.tiviaavaliacao.services.BeneficiarioService;
+import com.example.tiviaavaliacao.dtos.BeneficiarioUpdateRequestDTO;
 
 
 
@@ -32,7 +31,7 @@ import com.example.tiviaavaliacao.services.BeneficiarioService;
 @RequiredArgsConstructor
 public class BeneficiarioController {
 	private final BeneficiarioService service;
-	private static final Logger logger = Logger.getLogger(BeneficiarioService.class.getName());
+	private static final Logger logger = Logger.getLogger(BeneficiarioController.class.getName());
 	 
 	@Operation( summary = "Listar todos os Beneficiarios", description = "Serviço que lista todos os beneficiarios da base de dados")
     @GetMapping
@@ -65,7 +64,7 @@ public class BeneficiarioController {
 	
     @Operation(summary = "Atualiza Beneficiario", description = "Permite atualizar o beneficiario pelo ID e adicionar NOVOS documentos    (OBS: o campo TipoDocumento só aceita os dados do ENUM TipoDocumento)")
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateBeneficiario(@PathVariable Long id, @RequestBody BeneficiarioRequestDTO beneficiario) {
+    public ResponseEntity<Object> updateBeneficiario(@PathVariable Long id, @RequestBody BeneficiarioUpdateRequestDTO beneficiario) {
     	Beneficiario model = service.update(beneficiario, id);
   	    if (model != null) {
   	    	Optional<BeneficiarioResponseDTO> optional = service.findById(model.getId());
