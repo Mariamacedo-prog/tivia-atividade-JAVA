@@ -16,7 +16,8 @@ public interface BeneficiarioService {
    
     Beneficiario save(BeneficiarioRequestDTO beneficiario);
     
-    BeneficiarioResponseDTO update(BeneficiarioRequestDTO beneficiarioRequest, Long id);
  
     void deleteById(Long id);
+
+	Beneficiario update(BeneficiarioRequestDTO beneficiario, Long id);
 }

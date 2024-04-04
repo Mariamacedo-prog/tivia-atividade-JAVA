@@ -6,5 +6,5 @@ import com.example.tiviaavaliacao.models.Beneficiario;
 
 @Repository
 public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Long> {
-	
+
 }

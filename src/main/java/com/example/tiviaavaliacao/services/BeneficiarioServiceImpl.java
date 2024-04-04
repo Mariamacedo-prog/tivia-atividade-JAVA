@@ -44,18 +44,33 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
     }
     
     @Override
-    public BeneficiarioResponseDTO update(BeneficiarioRequestDTO beneficiarioRequest, Long id) {
-        // Implement logic to update the beneficiary and return the updated DTO
-        return null; // Replace null with the updated DTO
+    public Beneficiario save(BeneficiarioRequestDTO beneficiario) {
+        Beneficiario entity = mapToEntity(beneficiario);
+   	 	return beneficiarioRepository.save(entity);
     }
 
     @Override
-    public Beneficiario save(BeneficiarioRequestDTO beneficiario) {
-        Beneficiario entity = mapToEntity(beneficiario);
-   	 	logger.info("entity " + entity.getId()  + "   " +entity.getNome()  + "   " + entity.getTelefone()  + "   " + entity.getDataNascimento()  + "   " + entity.getDataInclusao()  + "   " );
-        return beneficiarioRepository.save(entity);
+    public Beneficiario update(BeneficiarioRequestDTO beneficiario, Long id) {
+        Beneficiario beneficiarioFound = beneficiarioRepository.findById(id).orElse(null);
+        if (beneficiarioFound != null) {
+        	if(!beneficiario.getNome().isEmpty()) {
+        		beneficiarioFound.setNome(beneficiario.getNome());
+        	}           	
+        	if(!beneficiario.getTelefone().isEmpty()) {
+        		beneficiarioFound.setTelefone(beneficiario.getTelefone());
+        	}           	
+        	if(beneficiario.getDataNascimento() != null) {
+        		beneficiarioFound.setDataNascimento(beneficiario.getDataNascimento());
+        	}           	
+        	beneficiarioFound.setDataAtualizacao(LocalDateTime.now());              
+            Beneficiario newBeneficiario = beneficiarioRepository.save(beneficiarioFound);
+            
+            return newBeneficiario;
+        } else {
+            return null;
+        }
     }
-
+    
     @Override
     public void deleteById(Long id) {
         beneficiarioRepository.deleteById(id);

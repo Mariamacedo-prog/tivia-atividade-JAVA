@@ -54,7 +54,6 @@ public class BeneficiarioController {
 	@Operation(summary = "Cria Beneficiario", description = "Criação de beneficiario e de seus documentos  (OBS: o campo TipoDocumento só aceita os dados do ENUM TipoDocumento)")
     @PostMapping
     public ResponseEntity<Object> createBeneficiario(@RequestBody BeneficiarioRequestDTO beneficiario) {
-		logger.info("entity " + "   " +beneficiario.getNome()  + "   " + beneficiario.getTelefone()  + "   " + beneficiario.getDataNascimento()  + "   " + beneficiario.getDataInclusao()  + "   " );
 	    Beneficiario model = service.save(beneficiario);
 	    if (model != null) {
 	    	Optional<BeneficiarioResponseDTO> optional = service.findById(model.getId());
@@ -63,6 +62,18 @@ public class BeneficiarioController {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível salvar o beneficiário");
 	    }
 	}
+	
+    @Operation(summary = "Atualiza Beneficiario", description = "Permite atualizar o beneficiario pelo ID e adicionar NOVOS documentos    (OBS: o campo TipoDocumento só aceita os dados do ENUM TipoDocumento)")
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateBeneficiario(@PathVariable Long id, @RequestBody BeneficiarioRequestDTO beneficiario) {
+    	Beneficiario model = service.update(beneficiario, id);
+  	    if (model != null) {
+  	    	Optional<BeneficiarioResponseDTO> optional = service.findById(model.getId());
+  	        return ResponseEntity.status(HttpStatus.CREATED).body(optional);
+  	    } else {
+  	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível atualizar o beneficiário");
+  	    }
+    }
 	
     @Operation(summary = "Deleta Beneficiario", description = "Deleta o Beneficiario pelo Id")
     @DeleteMapping("/{id}")
