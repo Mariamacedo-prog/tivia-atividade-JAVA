@@ -63,4 +63,15 @@ public class BeneficiarioController {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível salvar o beneficiário");
 	    }
 	}
+	
+    @Operation(summary = "Deleta Beneficiario", description = "Deleta o Beneficiario pelo Id")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object>  deleteBeneficiario(@PathVariable Long id) {
+    	Optional<BeneficiarioResponseDTO> beneficiario = service.findById(id);
+	    if (beneficiario.isEmpty())
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Beneficiario não encontrado!");
+	
+	    service.deleteById(id);
+	    return ResponseEntity.status(HttpStatus.OK).body("Beneficiario deletado com sucesso!");
+    }
 }
