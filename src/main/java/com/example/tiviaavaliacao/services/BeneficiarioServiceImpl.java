@@ -94,7 +94,6 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         entity.setNome(beneficiarioRequest.getNome());
         entity.setTelefone(beneficiarioRequest.getTelefone());
         entity.setDataNascimento(beneficiarioRequest.getDataNascimento());
-        // Set dataInclusao and dataAtualizacao to current date/time
         entity.setDataInclusao(LocalDateTime.now());
         entity.setDataAtualizacao(LocalDateTime.now());
         return entity;

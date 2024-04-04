@@ -10,9 +10,9 @@ import com.example.tiviaavaliacao.models.Documento;
 public interface DocumentoService {
 	List<DocumentoResponseDTO> findAllByBeneficiarioId(Long beneficiarioId);
 	
-	Optional<DocumentoRequestDTO> findById(Long id);
-
-	Documento save(DocumentoRequestDTO documento);
+	Optional<DocumentoResponseDTO> findById(Long id);
  
     void deleteById(Long id);
+
+	Documento save(DocumentoRequestDTO documentoDto, Long id);
 }
