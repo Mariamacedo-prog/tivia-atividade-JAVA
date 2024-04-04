@@ -22,7 +22,7 @@ public class Documento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-    @Column(name = "tipo_documento", nullable = false, columnDefinition = "SMALLINT CHECK (tipo_documento BETWEEN 0 AND 10)")
+    @Column(name = "tipo_documento")
     private String tipoDocumento;
 
 	@Column(name = "descricao")
