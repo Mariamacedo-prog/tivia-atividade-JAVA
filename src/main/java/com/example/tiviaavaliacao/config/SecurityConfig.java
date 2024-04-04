@@ -18,7 +18,7 @@ public class SecurityConfig {
 	            .authorizeRequests(authorizeRequests ->
 	                authorizeRequests
 	                    .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").authenticated()
-	
+	                    .requestMatchers("/h2-console/**").authenticated()
 	                    .anyRequest().authenticated()
 	            )
 	            .httpBasic()
