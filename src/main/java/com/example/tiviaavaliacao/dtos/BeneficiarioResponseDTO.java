@@ -8,12 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.tiviaavaliacao.models.Beneficiario;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class BeneficiarioResponseDTO {
-private Long id;
+	private Long id;
 	
 	private String nome;
 	
@@ -24,17 +31,4 @@ private Long id;
 	private LocalDateTime dataInclusao;
 	
 	private LocalDateTime dataAtualizacao;
-	
-	public BeneficiarioResponseDTO() {}
-	
-	@Autowired
-	public BeneficiarioResponseDTO(Beneficiario beneficiarioModel) {
-		setDataNascimento(beneficiarioModel.getDataNascimento());
-		setDataAtualizacao(beneficiarioModel.getDataAtualizacao());
-		setDataInclusao(beneficiarioModel.getDataInclusao());
-	    setNome(beneficiarioModel.getNome());
-	    setId(beneficiarioModel.getId());
-	    setTelefone(beneficiarioModel.getTelefone()); 
-	}
-	
 }

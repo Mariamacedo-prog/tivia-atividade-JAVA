@@ -18,8 +18,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "BENEFICIARIO")
-@AllArgsConstructor
-@Data
 @Getter
 @Setter
 public class Beneficiario {
@@ -44,6 +42,15 @@ public class Beneficiario {
 	private LocalDateTime dataAtualizacao;
 	
 	public Beneficiario() {}
+	
+	public Beneficiario(Long id, String nome, String telefone, LocalDate dataNascimento, LocalDateTime dataInclusao, LocalDateTime dataAtualizacao) {
+	    this.id = id;
+	    this.nome = nome;
+	    this.telefone = telefone;
+	    this.dataNascimento = dataNascimento;
+	    this.dataInclusao = dataInclusao;
+	    this.dataAtualizacao = dataAtualizacao;
+	}
 	
 	public Beneficiario(String nome, String telefone, LocalDate dataNascimento, LocalDateTime dataInclusao, LocalDateTime dataAtualizacao) {
 		this.setDataNascimento(dataNascimento);
